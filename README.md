@@ -14,6 +14,8 @@ A relative URL or inlined JSON contents for an OpenAPI schema definition.
 http://petstore.swagger.io/v2/swagger.json
 ```
 
+The following can be used in Github Actions if your file is located at your repo root.
+
 ```
 ./openapi.json
 ```
@@ -99,6 +101,7 @@ It is not advisable to change this, as it will most likely break the API for the
   with:
     openAPIDefinitions: http://petstore.swagger.io/v2/swagger.json
     apiManagementApiUrl: ${{ secrets.API_MANAGEMENT_API_URL }}
+    apiUrlSuffix: public
     credentials: ${{ secrets.AZURE_CREDENTIALS }}
 ```
 
