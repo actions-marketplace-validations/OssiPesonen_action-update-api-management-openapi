@@ -59,7 +59,7 @@ async function run(): Promise<void> {
     const tokenRequestParams = {
       grant_type: 'client_credentials',
       client_id: jsonObj.clientId,
-      clientSecret: jsonObj.clientSecret,
+      client_secret: jsonObj.clientSecret,
       resource: 'https://management.azure.com/'
     };
 
