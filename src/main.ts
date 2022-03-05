@@ -2,9 +2,11 @@ import * as core from '@actions/core';
 import axios from 'axios';
 import * as fs from 'fs';
 
+const API_VERSION = '2021-08-01';
+
 interface CoreParams {
   openApiDefinitionFile: string;
-  apiManagementEndpointUrl: string;
+  apiId: string;
   credentials: string;
   apiUrlSuffix: string;
 }
@@ -16,10 +18,10 @@ function getCoreParams(): CoreParams {
     core.setFailed('Missing OpenAPI definition from input');
   }
 
-  const apiManagementEndpointUrl: string = core.getInput('apiManagementApiUrl');
+  const apiId: string = core.getInput('apiId');
 
-  if (!apiManagementEndpointUrl) {
-    core.setFailed('Missing API Management API URL from input');
+  if (!apiId) {
+    core.setFailed('Missing API ID from input');
   }
 
   const credentials: string = core.getInput('credentials');
@@ -34,12 +36,12 @@ function getCoreParams(): CoreParams {
     core.setFailed('Missing path from input.');
   }
 
-  return {openApiDefinitionFile, apiManagementEndpointUrl, credentials, apiUrlSuffix};
+  return {openApiDefinitionFile, apiId, credentials, apiUrlSuffix};
 }
 
 async function run(): Promise<void> {
   try {
-    const {openApiDefinitionFile, apiManagementEndpointUrl, credentials, apiUrlSuffix} = getCoreParams();
+    const {openApiDefinitionFile, apiId, credentials, apiUrlSuffix} = getCoreParams();
 
     // Request an access token
     core.info('Parse credentials JSON to an object');
@@ -93,8 +95,15 @@ async function run(): Promise<void> {
       }
     };
 
+    let apiIdPath = apiId;
+
+    // In case initial slash missing, let's add it
+    if (!apiId.startsWith('/')) {
+      apiIdPath = `/${apiId}`;
+    }
+
     //PUT get response to API manager
-    const updated = await axios.put(apiManagementEndpointUrl, putData, {
+    const updated = await axios.put(`https://management.azure.com${apiIdPath}?api-version=${API_VERSION}`, putData, {
       headers: {Authorization: `Bearer ${response?.data.access_token}`}
     });
 

@@ -3381,14 +3381,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(186));
 const axios_1 = __importDefault(__webpack_require__(545));
 const fs = __importStar(__webpack_require__(747));
+const API_VERSION = '2021-08-01';
 function getCoreParams() {
     const openApiDefinitionFile = core.getInput('openAPIDefinitions');
     if (!openApiDefinitionFile) {
         core.setFailed('Missing OpenAPI definition from input');
     }
-    const apiManagementEndpointUrl = core.getInput('apiManagementApiUrl');
-    if (!apiManagementEndpointUrl) {
-        core.setFailed('Missing API Management API URL from input');
+    const apiId = core.getInput('apiId');
+    if (!apiId) {
+        core.setFailed('Missing API ID from input');
     }
     const credentials = core.getInput('credentials');
     if (!credentials) {
@@ -3398,12 +3399,12 @@ function getCoreParams() {
     if (!apiUrlSuffix) {
         core.setFailed('Missing path from input.');
     }
-    return { openApiDefinitionFile, apiManagementEndpointUrl, credentials, apiUrlSuffix };
+    return { openApiDefinitionFile, apiId, credentials, apiUrlSuffix };
 }
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const { openApiDefinitionFile, apiManagementEndpointUrl, credentials, apiUrlSuffix } = getCoreParams();
+            const { openApiDefinitionFile, apiId, credentials, apiUrlSuffix } = getCoreParams();
             // Request an access token
             core.info('Parse credentials JSON to an object');
             const jsonObj = JSON.parse(credentials);
@@ -3445,8 +3446,13 @@ function run() {
                     path: apiUrlSuffix
                 }
             };
+            let apiIdPath = apiId;
+            // In case initial slash missing, let's add it
+            if (!apiId.startsWith('/')) {
+                apiIdPath = `/${apiId}`;
+            }
             //PUT get response to API manager
-            const updated = yield axios_1.default.put(apiManagementEndpointUrl, putData, {
+            const updated = yield axios_1.default.put(`https://management.azure.com${apiIdPath}?api-version=${API_VERSION}`, putData, {
                 headers: { Authorization: `Bearer ${response === null || response === void 0 ? void 0 : response.data.access_token}` }
             });
             core.info(updated.data);

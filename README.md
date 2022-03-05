@@ -21,31 +21,26 @@ The following can be used in Github Actions if your file is located at your repo
 ```
 ---
 
-`apiManagementApiUrl`
+`apiId`
 
-API Management API URL with subscriptionId, resourceGroup, serviceName etc.
+API Management API ID with subscriptionId, resourceGroup, serviceName etc.
 
 #### Example value
 
 ```
- https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}?api-version=2021-08-01
+/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}
 ```
 
-> :warning:   **It is recommended that you store this in your Github secrets and reference that here. This URL has your subscription ID, resource names etc. and while that in itself is not too dangerous, it's never a good idea to expose more information than needed in your action workfiles.
-
-To determine the API url of your API Management API, you can use the Azure CLI to list your API's and simply grab the `id` value of that response.
+To find out your API ID, you can use the Azure CLI to list your API's and simply grab the `id` value of that response.
 
 ```
 az apim api list --resource-group <RESOURCE-GROUP> --service-name <API-MANAGEMENT-SERVICE-NAME>
 ```
-
-You can get both `RESOURCE-GROUP` and `API-MANAGEMENT-SERVICE-NAME` from your browser URL if you're at API Management in Azure portal.
-
 This will return a list of objects, where each object contains an `id` property that looks something like this
 
     "id": "/subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}",
-    
-Now simply put that in between the domain (https://management.azure.com) and the api version query parameter (?api-version=2021-08-01) and good to go.
+
+*If needed, you can get both `RESOURCE-GROUP` and `API-MANAGEMENT-SERVICE-NAME` from your browser URL if you're at API Management in Azure portal.*
 
 ---
 

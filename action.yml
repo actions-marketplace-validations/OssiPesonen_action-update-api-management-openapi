@@ -5,9 +5,9 @@ inputs:
   openAPIDefinitions:
     required: true
     description: 'Relative URL or path to a OpenAPI JSON schema file'
-  apiManagementApiUrl:
+  apiId:
     required: true
-    description: 'API Management API endpoint URL with your subscription ID, resource group, service name etc.'
+    description: 'API ID, example. "/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}"'
   credentials:
     required: true
     description: 'API Management credentials'
