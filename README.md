@@ -19,7 +19,7 @@ http://petstore.swagger.io/v2/swagger.json
 ```
 ---
 
-`APIManagementAPI`
+`apiManagementApiUrl`
 
 API Management API URL with subscriptionId, resourceGroup, serviceName etc.
 

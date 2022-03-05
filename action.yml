@@ -1,16 +1,16 @@
-name: 'Update Azure API Management'
-description: 'This GitHub Action allows you to update your Azure API Management api from an OpenAPI endpoint or file.'
-author: 'Solidify'
+name: 'Update Azure API Management OpenAPI schema'
+description: 'This GitHub Action allows you to update your Azure API Management OpenAPI schema using a file or a relative URL'
+author: 'Ossi Pesonen'
 inputs:
-  swaggerUrl:
+  openAPIDefinitions:
     required: true
-    description: 'URL to Swagger'
-  apiManagementEndpointUrl:
+    description: 'Relative URL or path to a OpenAPI JSON schema file'
+  apiManagementApiUrl:
     required: true
-    description: 'APIM endpoint URL'
-  creds:
+    description: 'API Management API endpoint URL with your subscription ID, resource group, service name etc.'
+  credentials:
     required: true
-    description: 'APIM credentials'
+    description: 'API Management credentials'
 runs:
   using: 'node12'
   main: 'dist/index.js'
