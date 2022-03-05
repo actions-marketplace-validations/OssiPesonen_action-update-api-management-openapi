@@ -3424,7 +3424,7 @@ function run() {
             const requestArgs = new URLSearchParams(tokenRequestParams).toString();
             try {
                 response = yield axios_1.default.post(`https://login.microsoftonline.com/${jsonObj.tenantId}/oauth2/token`, requestArgs, config);
-                core.info(response.data);
+                core.info('Token received!');
             }
             catch (err) {
                 core.error(err);

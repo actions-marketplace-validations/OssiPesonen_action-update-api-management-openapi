@@ -69,7 +69,7 @@ async function run(): Promise<void> {
 
     try {
       response = await axios.post(`https://login.microsoftonline.com/${jsonObj.tenantId}/oauth2/token`, requestArgs, config);
-      core.info(response.data);
+      core.info('Token received!');
     } catch (err) {
       core.error(err);
     }
