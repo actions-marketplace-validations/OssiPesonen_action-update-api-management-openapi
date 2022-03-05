@@ -77,7 +77,14 @@ async function run(): Promise<void> {
 
     if (!openApiDefinitionFile.startsWith('http')) {
       // For local file paths we read the contents
+      if (!fs.existsSync(openApiDefinitionFile)) {
+        core.error(`Unable to locate definition file in path ${openApiDefinitionFile}`);
+      }
+
       value = fs.readFileSync(openApiDefinitionFile, 'utf8');
+
+      core.info(value);
+
       format = 'openapi+json';
     }
 
