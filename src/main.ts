@@ -6,7 +6,7 @@ interface CoreParams {
   openApiDefinitionFile: string;
   apiManagementEndpointUrl: string;
   credentials: string;
-  path: string;
+  apiUrlSuffix: string;
 }
 
 function getCoreParams(): CoreParams {
@@ -28,18 +28,18 @@ function getCoreParams(): CoreParams {
     core.setFailed('Missing credentials from input.');
   }
 
-  const path: string = core.getInput('path');
+  const apiUrlSuffix: string = core.getInput('apiUrlSuffix');
 
-  if (!path) {
+  if (!apiUrlSuffix) {
     core.setFailed('Missing path from input.');
   }
 
-  return {openApiDefinitionFile, apiManagementEndpointUrl, credentials, path};
+  return {openApiDefinitionFile, apiManagementEndpointUrl, credentials, apiUrlSuffix};
 }
 
 async function run(): Promise<void> {
   try {
-    const {openApiDefinitionFile, apiManagementEndpointUrl, credentials, path} = getCoreParams();
+    const {openApiDefinitionFile, apiManagementEndpointUrl, credentials, apiUrlSuffix} = getCoreParams();
 
     // Request an access token
     core.info('Parse credentials JSON to an object');
@@ -82,9 +82,6 @@ async function run(): Promise<void> {
       }
 
       value = fs.readFileSync(openApiDefinitionFile, 'utf8');
-
-      core.info(value);
-
       format = 'openapi+json';
     }
 
@@ -92,7 +89,7 @@ async function run(): Promise<void> {
       properties: {
         format,
         value,
-        path
+        path: apiUrlSuffix
       }
     };
 

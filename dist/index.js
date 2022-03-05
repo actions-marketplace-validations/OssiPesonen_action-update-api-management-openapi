@@ -3394,16 +3394,16 @@ function getCoreParams() {
     if (!credentials) {
         core.setFailed('Missing credentials from input.');
     }
-    const path = core.getInput('path');
-    if (!path) {
+    const apiUrlSuffix = core.getInput('apiUrlSuffix');
+    if (!apiUrlSuffix) {
         core.setFailed('Missing path from input.');
     }
-    return { openApiDefinitionFile, apiManagementEndpointUrl, credentials, path };
+    return { openApiDefinitionFile, apiManagementEndpointUrl, credentials, apiUrlSuffix };
 }
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const { openApiDefinitionFile, apiManagementEndpointUrl, credentials, path } = getCoreParams();
+            const { openApiDefinitionFile, apiManagementEndpointUrl, credentials, apiUrlSuffix } = getCoreParams();
             // Request an access token
             core.info('Parse credentials JSON to an object');
             const jsonObj = JSON.parse(credentials);
@@ -3436,14 +3436,13 @@ function run() {
                     core.error(`Unable to locate definition file in path ${openApiDefinitionFile}`);
                 }
                 value = fs.readFileSync(openApiDefinitionFile, 'utf8');
-                core.info(value);
                 format = 'openapi+json';
             }
             const putData = {
                 properties: {
                     format,
                     value,
-                    path
+                    path: apiUrlSuffix
                 }
             };
             //PUT get response to API manager

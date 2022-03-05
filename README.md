@@ -44,7 +44,7 @@ This will return a list of objects, where each object contains an `id` property 
     "id": "/subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}",
     
 Now simply put that in between the domain (https://management.azure.com) and the api version query parameter (?api-version=2021-08-01) and good to go.
-    
+
 ---
 
 `credentials`
@@ -79,9 +79,9 @@ Your app should now have the necessary permissions to execute the schema update.
 
 ---
 
-`path`
+`apiUrlSuffix`
 
-API URL suffix ie. `https://{apiId}.azure-api.net/{path}`
+API URL suffix ie. `https://{apiId}.azure-api.net/{apiUrlSuffix}`
 
 #### Example value
 
