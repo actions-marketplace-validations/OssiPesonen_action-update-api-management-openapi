@@ -11,6 +11,9 @@ inputs:
   credentials:
     required: true
     description: 'API Management credentials'
+  apiUrlSuffix:
+    required: true
+    description: 'API URL suffix'
 runs:
   using: 'node12'
   main: 'dist/index.js'
