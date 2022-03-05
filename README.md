@@ -79,6 +79,18 @@ Your app should now have the necessary permissions to execute the schema update.
 
 ---
 
+`path`
+
+API URL suffix ie. `https://{apiId}.azure-api.net/{path}`
+
+#### Example value
+
+    public
+
+It is not advisable to change this, as it will most likely break the API for the users.
+
+---
+
 ## Example usage
 
 ```yaml
