@@ -61,7 +61,7 @@ To get these, you need to go to your Azure Portal and find App Registrations. Cr
 {
     "tenantId": "TENANT-ID>",
     "clientId": "<CLIENT-ID>",
-    "secretKey": "<SECRET-KEY"
+    "clientSecret": "<SECRET-KEY"
 }
 ```
 
