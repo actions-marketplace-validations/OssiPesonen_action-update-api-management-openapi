@@ -95,7 +95,7 @@ It is not advisable to change this, as it will most likely break the API for the
 
 ```yaml
 - name: Update Azure API Management OpenAPI schema
-  uses: OssiPesonen/action-update-api-management-openapim@master
+  uses: OssiPesonen/action-update-api-management-openapi@master
   with:
     openAPIDefinitions: http://petstore.swagger.io/v2/swagger.json
     apiManagementApiUrl: ${{ secrets.API_MANAGEMENT_API_URL }}
