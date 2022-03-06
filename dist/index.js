@@ -4360,7 +4360,7 @@ function action() {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
             };
-            core.info('Fetching access token');
+            core.info('Fetching access token...');
             let response = null;
             const tokenRequestParams = {
                 grant_type: 'client_credentials',
@@ -4379,11 +4379,13 @@ function action() {
             let format = 'openapi+json-link';
             let value = openApiDefinitionFile;
             if (!openApiDefinitionFile.startsWith('http')) {
+                core.info('Attempting to open a local definition file...');
                 // For local file paths we read the contents
                 if (!fs.existsSync(openApiDefinitionFile)) {
                     core.error(`Unable to locate definition file in path ${openApiDefinitionFile}`);
                 }
                 value = fs.readFileSync(openApiDefinitionFile, 'utf8');
+                core.info('File read successfully!');
                 format = 'openapi+json';
             }
             const putData = {
@@ -4398,12 +4400,13 @@ function action() {
             if (!apiId.startsWith('/')) {
                 apiIdPath = `/${apiId}`;
             }
+            core.info('Updating schema for API...');
             //PUT get response to API manager
             const updated = yield axios_1.default.put(`https://management.azure.com${apiIdPath}?api-version=${exports.API_VERSION}`, putData, {
                 headers: { Authorization: `Bearer ${response === null || response === void 0 ? void 0 : response.data.access_token}` }
             });
             core.info(updated.data);
-            core.info('Finished');
+            core.info('Finished! Goodbye...');
         }
         catch (error) {
             core.setFailed(error.message);

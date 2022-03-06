@@ -54,7 +54,7 @@ export async function action(): Promise<void> {
       }
     };
 
-    core.info('Fetching access token');
+    core.info('Fetching access token...');
 
     let response = null;
 
@@ -78,12 +78,15 @@ export async function action(): Promise<void> {
     let value: string = openApiDefinitionFile;
 
     if (!openApiDefinitionFile.startsWith('http')) {
+      core.info('Attempting to open a local definition file...');
+
       // For local file paths we read the contents
       if (!fs.existsSync(openApiDefinitionFile)) {
         core.error(`Unable to locate definition file in path ${openApiDefinitionFile}`);
       }
 
       value = fs.readFileSync(openApiDefinitionFile, 'utf8');
+      core.info('File read successfully!');
       format = 'openapi+json';
     }
 
@@ -102,13 +105,14 @@ export async function action(): Promise<void> {
       apiIdPath = `/${apiId}`;
     }
 
+    core.info('Updating schema for API...');
     //PUT get response to API manager
     const updated = await axios.put(`https://management.azure.com${apiIdPath}?api-version=${API_VERSION}`, putData, {
       headers: { Authorization: `Bearer ${response?.data.access_token}` }
     });
 
     core.info(updated.data);
-    core.info('Finished');
+    core.info('Finished! Goodbye...');
   } catch (error) {
     core.setFailed(error.message);
   }
