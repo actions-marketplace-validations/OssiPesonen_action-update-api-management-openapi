@@ -3346,25 +3346,6 @@ module.exports = require("assert");
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3374,93 +3355,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const core = __importStar(__webpack_require__(186));
-const axios_1 = __importDefault(__webpack_require__(545));
-const fs = __importStar(__webpack_require__(747));
-const API_VERSION = '2021-08-01';
-function getCoreParams() {
-    const openApiDefinitionFile = core.getInput('openAPIDefinitions');
-    if (!openApiDefinitionFile) {
-        core.setFailed('Missing OpenAPI definition from input');
-    }
-    const apiId = core.getInput('apiId');
-    if (!apiId) {
-        core.setFailed('Missing API ID from input');
-    }
-    const credentials = core.getInput('credentials');
-    if (!credentials) {
-        core.setFailed('Missing credentials from input.');
-    }
-    const apiUrlSuffix = core.getInput('apiUrlSuffix');
-    if (!apiUrlSuffix) {
-        core.setFailed('Missing path from input.');
-    }
-    return { openApiDefinitionFile, apiId, credentials, apiUrlSuffix };
-}
+const action_1 = __webpack_require__(672);
+// This file simply acts as an entrypoint to run the action
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const { openApiDefinitionFile, apiId, credentials, apiUrlSuffix } = getCoreParams();
-            // Request an access token
-            core.info('Parse credentials JSON to an object');
-            const jsonObj = JSON.parse(credentials);
-            const config = {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            };
-            core.info('Fetching access token');
-            let response = null;
-            const tokenRequestParams = {
-                grant_type: 'client_credentials',
-                client_id: jsonObj.clientId,
-                client_secret: jsonObj.clientSecret,
-                resource: 'https://management.azure.com/'
-            };
-            const requestArgs = new URLSearchParams(tokenRequestParams).toString();
-            try {
-                response = yield axios_1.default.post(`https://login.microsoftonline.com/${jsonObj.tenantId}/oauth2/token`, requestArgs, config);
-                core.info('Token received!');
-            }
-            catch (err) {
-                core.error(err);
-            }
-            let format = 'openapi+json-link';
-            let value = openApiDefinitionFile;
-            if (!openApiDefinitionFile.startsWith('http')) {
-                // For local file paths we read the contents
-                if (!fs.existsSync(openApiDefinitionFile)) {
-                    core.error(`Unable to locate definition file in path ${openApiDefinitionFile}`);
-                }
-                value = fs.readFileSync(openApiDefinitionFile, 'utf8');
-                format = 'openapi+json';
-            }
-            const putData = {
-                properties: {
-                    format,
-                    value,
-                    path: apiUrlSuffix
-                }
-            };
-            let apiIdPath = apiId;
-            // In case initial slash missing, let's add it
-            if (!apiId.startsWith('/')) {
-                apiIdPath = `/${apiId}`;
-            }
-            //PUT get response to API manager
-            const updated = yield axios_1.default.put(`https://management.azure.com${apiIdPath}?api-version=${API_VERSION}`, putData, {
-                headers: { Authorization: `Bearer ${response === null || response === void 0 ? void 0 : response.data.access_token}` }
-            });
-            core.info(updated.data);
-            core.info('Finished');
-        }
-        catch (error) {
-            core.setFailed(error.message);
-        }
+        yield action_1.action();
     });
 }
 run();
@@ -4384,6 +4284,134 @@ module.exports = function isAxiosError(payload) {
 /***/ (function(module) {
 
 module.exports = require("util");
+
+/***/ }),
+
+/***/ 672:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.action = exports.API_VERSION = void 0;
+const core = __importStar(__webpack_require__(186));
+const axios_1 = __importDefault(__webpack_require__(545));
+const fs = __importStar(__webpack_require__(747));
+exports.API_VERSION = '2021-08-01';
+function getCoreParams() {
+    const openApiDefinitionFile = core.getInput('openAPIDefinitions');
+    if (!openApiDefinitionFile) {
+        core.setFailed('Missing OpenAPI definition from input');
+    }
+    const apiId = core.getInput('apiId');
+    if (!apiId) {
+        core.setFailed('Missing API ID from input');
+    }
+    const credentials = core.getInput('credentials');
+    if (!credentials) {
+        core.setFailed('Missing credentials from input');
+    }
+    const apiUrlSuffix = core.getInput('apiUrlSuffix');
+    if (!apiUrlSuffix) {
+        core.setFailed('Missing path from input');
+    }
+    return { openApiDefinitionFile, apiId, credentials, apiUrlSuffix };
+}
+function action() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { openApiDefinitionFile, apiId, credentials, apiUrlSuffix } = getCoreParams();
+            // Request an access token
+            core.info('Parse credentials JSON to an object');
+            const credentialsObj = JSON.parse(credentials);
+            const config = {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            };
+            core.info('Fetching access token');
+            let response = null;
+            const tokenRequestParams = {
+                grant_type: 'client_credentials',
+                client_id: credentialsObj.clientId,
+                client_secret: credentialsObj.clientSecret,
+                resource: 'https://management.azure.com/'
+            };
+            const requestArgs = new URLSearchParams(tokenRequestParams).toString();
+            try {
+                response = yield axios_1.default.post(`https://login.microsoftonline.com/${credentialsObj.tenantId}/oauth2/token`, requestArgs, config);
+                core.info('Token received!');
+            }
+            catch (err) {
+                core.error(err);
+            }
+            let format = 'openapi+json-link';
+            let value = openApiDefinitionFile;
+            if (!openApiDefinitionFile.startsWith('http')) {
+                // For local file paths we read the contents
+                if (!fs.existsSync(openApiDefinitionFile)) {
+                    core.error(`Unable to locate definition file in path ${openApiDefinitionFile}`);
+                }
+                value = fs.readFileSync(openApiDefinitionFile, 'utf8');
+                format = 'openapi+json';
+            }
+            const putData = {
+                properties: {
+                    format,
+                    value,
+                    path: apiUrlSuffix
+                }
+            };
+            let apiIdPath = apiId;
+            // In case initial slash missing, let's add it
+            if (!apiId.startsWith('/')) {
+                apiIdPath = `/${apiId}`;
+            }
+            //PUT get response to API manager
+            const updated = yield axios_1.default.put(`https://management.azure.com${apiIdPath}?api-version=${exports.API_VERSION}`, putData, {
+                headers: { Authorization: `Bearer ${response === null || response === void 0 ? void 0 : response.data.access_token}` }
+            });
+            core.info(updated.data);
+            core.info('Finished');
+        }
+        catch (error) {
+            core.setFailed(error.message);
+        }
+    });
+}
+exports.action = action;
+
 
 /***/ }),
 
