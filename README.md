@@ -2,7 +2,21 @@
 
 This GitHub Action allows you to update your Azure API Management OpenAPI schema using a JSON definition file. Note that the definition file must be in JSON format. YAML is not supported by the API Management API (yeah, funny name)
 
-## Inputs
+# Example usage
+
+Add the following to your workflow steps.
+
+```yaml
+- name: Update Azure API Management OpenAPI schema
+  uses: OssiPesonen/action-update-api-management-openapi@master
+  with:
+    openAPIDefinitions: http://petstore.swagger.io/v2/swagger.json
+    apiId: /subscriptions/abc123/resourceGroups/myResources/providers/Microsoft.ApiManagement/service/superbApi/apis/excellentApi
+    apiUrlSuffix: public
+    credentials: ${{ secrets.AZURE_CREDENTIALS }}
+```
+
+# Inputs
 
 `openAPIDefinitions`
 
@@ -86,21 +100,7 @@ API URL suffix ie. `https://{apiId}.azure-api.net/{apiUrlSuffix}`
 
 It is not advisable to change this, as it will most likely break the API for the users.
 
----
-
-## Example usage
-
-```yaml
-- name: Update Azure API Management OpenAPI schema
-  uses: OssiPesonen/action-update-api-management-openapi@master
-  with:
-    openAPIDefinitions: http://petstore.swagger.io/v2/swagger.json
-    apiId: /subscriptions/abc123/resourceGroups/myResources/providers/Microsoft.ApiManagement/service/superbApi/apis/excellentApi
-    apiUrlSuffix: public
-    credentials: ${{ secrets.AZURE_CREDENTIALS }}
-```
-
-## Resources
+# Resources
 
 - [az apim api | Microsoft Docs](https://docs.microsoft.com/en-US/cli/azure/apim/api?view=azure-cli-latest#az-apim-api-list)
 - [Apis - Create Or Update - REST API (Azure API Management](https://docs.microsoft.com/en-us/rest/api/apimanagement/current-ga/apis/create-or-update)
