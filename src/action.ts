@@ -71,7 +71,7 @@ export async function action(): Promise<void> {
       response = await axios.post(`https://login.microsoftonline.com/${credentialsObj.tenantId}/oauth2/token`, requestArgs, config);
       core.info('Token received!');
     } catch (err) {
-      core.error(err);
+      core.error(err as Error);
     }
 
     let format = 'openapi+json-link';
@@ -114,6 +114,6 @@ export async function action(): Promise<void> {
     core.info(updated.data);
     core.info('Finished! Goodbye...');
   } catch (error) {
-    core.setFailed(error.message);
+    core.setFailed((error as Error).message);
   }
 }
